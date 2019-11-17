@@ -8,7 +8,11 @@
             <span>金額</span>
           </div>
           <div class="orderlist">
-            <span>點餐</span>
+            <table>
+              <tr v-for="item in data">
+                <td></td>
+              </tr>
+            </table>
           </div>
           <div class="where">
             <span>外帶</span>
@@ -29,8 +33,13 @@
             </table>
           </div>
           <div class="catergory">
-            <button>{{catergoryName.name}}spicy</button>
-            <button>{{catergoryName.name}}japan</button>
+            <table>
+              <tr>
+                <td class="col-4" v-for="item in catergoryName.type" :key="item">
+                  <button @click="sending(catergoryName.name,item)">{{catergoryName.name}}{{item}}</button>
+                </td>
+              </tr>
+            </table>
           </div>
           <div class="another">
             <button>nospicy</button>
@@ -47,14 +56,22 @@ export default {
   name: 'HelloWorld',
   data () {
     return {
+      dish:[],
       type: {
-        cow: 'cow',
-        sheep: 'sheep',
-        fish: 'fish',
-        pig: 'pig'
+        cow: '香茅酸辣',
+        eggplan: '茄汁',
+        japan: '日式',
+        brand: '招牌',
+        single: '單點'
       },
       catergoryName: {
-        name: ''
+        name: '',
+        type: {
+          cow: 'cow',
+          sheep: 'sheep',
+          fish: 'fish',
+          pig: 'pig'
+        }
       }
     }
   },
@@ -62,6 +79,10 @@ export default {
     addCatergory (item) {
       const vm = this
       vm.catergoryName.name = item
+    },
+    sending(type,name){
+      const vm = this
+      vm.data.push(type,name)
     }
   }
 }
