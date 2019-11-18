@@ -16,8 +16,8 @@
     </div>
     <div class="view">
       <table>
-        <tr v-for="item in view1.type" :key="item.length">
-          {{item}}
+        <tr v-for="item in viewdata" :key="item.length">
+          {{item.food}}
         </tr>
       </table>
     </div>
@@ -46,10 +46,15 @@ export default {
         ]
       },
       view1:{
+        food:[]
+      },
+      viewdata:{
         food:[],
-        id:''
+        id:0
       }
     }
+  },
+  computed:{
   },
   methods:{
     oper1Sending(item){
@@ -57,12 +62,15 @@ export default {
       vm.holder1 = item
     },
     oper2Sending(holder1,item){
-      let os = {
-        food:[`${holder1}${item}`],
-        id:item.length
+      const vm = this
+      let data = [holder1,item].join('')
+      vm.viewdata.food.push(data)
+      if(vm.viewdata.food){
+        vm.viewdata.id += 1
+      }else{
+        vm.viewdata.id = 0
       }
-
-      console.log(os.food)
+      console.log(vm.viewdata)
     }
   }
 }
