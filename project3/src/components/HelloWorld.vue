@@ -24,7 +24,9 @@
     <div class="view">
       <table>
         <tr v-for="item in viewdata.food" :key="item.id">
-          {{item}} <span v-for="item in viewdata.id" :key="item">{{Number(item)}}</span>
+          <button>
+            {{item}} <span v-for="item in viewdata.id" :key="item">{{Number(item)}}</span>
+          </button>
         </tr>
       </table>
     </div>
