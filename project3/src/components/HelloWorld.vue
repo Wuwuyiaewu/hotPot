@@ -14,12 +14,22 @@
         </tr>
       </table>
     </div>
-    <div class="view">
+    <div class="oper3">
       <table>
-        <tr v-for="item in viewdata" :key="item.length">
-          {{item.food}}
+        <tr v-for="item in oper3.type" :key="item">
+          <button>{{item}}</button>
         </tr>
       </table>
+    </div>
+    <div class="view">
+      <table>
+        <tr v-for="item in viewdata.food" :key="item.id">
+          {{item}} <span v-for="item in viewdata.id" :key="item">{{Number(item)}}</span>
+        </tr>
+      </table>
+    </div>
+    <div class="clean">
+      <button @click="clean()">清除</button>
     </div>
   </div>
 </template>
@@ -45,12 +55,17 @@ export default {
           '牛肉'
         ]
       },
-      view1:{
-        food:[]
-      },
       viewdata:{
         food:[],
         id:0
+      },
+      oper3: {
+        type: [
+          '大辣',
+          '中辣',
+          '小辣',
+          '微辣'
+        ]
       }
     }
   },
@@ -71,6 +86,11 @@ export default {
         vm.viewdata.id = 0
       }
       console.log(vm.viewdata)
+    },
+    clean(){
+      const vm = this
+      vm.viewdata.food = []
+      vm.viewdata.id = 0
     }
   }
 }
