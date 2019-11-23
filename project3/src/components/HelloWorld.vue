@@ -5,20 +5,42 @@
         <!-- 左側 -->
         <div class="col-xl-6">
           <!-- 訂單價格 -->
-          <div class="row"></div>
+          <div class="row">
+            <div class="col-xl-12"></div>
+          </div>
           <!-- 點菜 -->
-          <div class="row"></div>
+          <div class="row">
+            <div class="col-xl-12"></div>
+          </div>
           <!-- 內用、外帶、修改 -->
-          <div class="row"></div>
+          <div class="row">
+            <div class="col-xl-3"></div>
+          </div>
         </div>
         <!-- 右側 -->
         <div class="col-xl-6">
           <!-- 分類 -->
-          <div class="row"></div>
+          <div class="row">
+            <div class="col-xl-4" v-for="item in oper1[0].special" :key="item" @click="special(item)"><button>{{item}}</button></div>
+            <div class="col-xl-4" v-for="(item,key) in oper1[1].hotpot" :key="key" @click="hotpot(item)"><button>{{item}}</button></div>
+            <div class="col-xl-4" v-for="(item,key) in oper1[2]" :key="key" @click="hotpot(item)"><button>{{item}}</button></div>
+            <div class="col-xl-4" v-for="(item,key) in oper1[3]" :key="key"><button>{{item}}</button></div>
+            <div class="col-xl-4" v-for="(item,key) in oper1[4]" :key="key"><button>{{item}}</button></div>
+            <div class="col-xl-4" v-for="(item,key) in oper1[5]" :key="key"><button>{{item}}</button></div>
+            <div class="col-xl-4" v-for="(item,key) in oper1[6]" :key="key"><button>{{item}}</button></div>
+            <div class="col-xl-4" v-for="(item,key) in oper1[7]" :key="key"><button>{{item}}</button></div>
+
+          </div>
           <!-- 細項 -->
-          <div class="row"></div>
+          <div class="row">
+            <h2>細項</h2>
+            <div class="col-xl-3" v-for="(item,key) in view1" :key="key">
+            </div>
+          </div>
           <!-- 客製化 -->
-          <div class="row"></div>
+          <div class="row">
+            <div class="col-xl-2" v-for="(item,key) in oper3[0].type" :key="key"><button>{{item}}</button></div>
+          </div>
         </div>
       </div>
     </div>
@@ -31,9 +53,14 @@ export default {
   data () {
     return {
       oper1: [
+        { 
+          title:'招牌',
+          special:
+          ['招牌系列']
+        },
         {
-          special:'招牌系列',
-          hotpot: [
+          title:'火鍋',
+          hotpot:[
           '日式火鍋',
           '沙茶火鍋',
           '麻辣火鍋',
@@ -51,127 +78,159 @@ export default {
           '素食火鍋',
           '醇濃牛奶鍋',
           '壽喜燒'
-          ],
-          roast:'火烤雙拼',
-          sukiyaki:'壽喜燒系列',
-          hightqty:'精緻火鍋',
-          alacarte:'單點',
-          soup:'湯頭',
+          ]
+        },
+        { 
+          title:'火烤雙拼',
+          roast:'火烤雙拼'
+        },
+        { 
+          title:'壽喜燒',
+          sukiyaki:'壽喜燒系列'
+        },
+        { 
+          title:'精緻火鍋',
+          hightqty:'精緻火鍋'
+        },
+        { 
+          title:'單點',
+          alacarte:'單點'
+        },
+        { 
+          title:'湯頭',
+          soup:'湯頭'
+        },
+        { 
+          title:'鍋燒麵',
           noodle:'鍋燒麵類'
         }
       ],
       oper2: [
         {
           special:[
-            '麻辣腸旺豆腐煲',
-            '麻辣招牌綜合',
-            '麻辣綜合細粉',
-            '麻辣鴨血臭豆腐',
-            '麻辣鴨血',
-            '麻辣臭豆腐',
-            '麻辣牛肉煲',
-            '麻辣羊肉煲',
-            '麻辣雞肉煲',
-            '麻辣豬肉煲'
-          ],
+            ['麻辣腸旺豆腐煲',130],
+            ['麻辣招牌綜合',100],
+            ['麻辣綜合細粉',90],
+            ['麻辣鴨血臭豆腐',80],
+            ['麻辣鴨血',70],
+            ['麻辣臭豆腐',70],
+            ['麻辣牛肉煲',140],
+            ['麻辣羊肉煲',140],
+            ['麻辣雞肉煲',140],
+            ['麻辣豬肉煲',130]
+          ]
+        },
+        {
           hotpot: [
-          '豬肉',
-          '羊肉',
-          '雞肉',
-          '牛肉',
-          '海鮮',
-          '大腸豬肚',
-          '鮮菇',
-          '豪華鍋',
-          ],
+            ['豬肉',120],
+            ['羊肉',130],
+            ['雞肉',130],
+            ['牛肉',130],
+            ['海鮮',140],
+            ['大腸豬肚',140],
+            ['鮮菇',140],
+            ['豪華鍋',180],
+          ]
+        },
+        {
           roast:[
-            '梅花豬',
-            '培根牛',
-            '雞腿排'
-          ],
+            ['梅花豬',230],
+            ['培根牛',230],
+            ['雞腿排',230]
+          ]
+        },
+        {
           sukiyaki:[
-            '梅花豬',
-            '培根牛',
-            '雞腿排'
-          ],
+            ['梅花豬',200],
+            ['培根牛',200],
+            ['雞腿排',200]
+          ]
+        },
+        {
           hightqty:[
-            '精緻豪華鍋',
-            '花枝鮑魚鍋',
-            '鮮蝦蛤蠣鍋',
-            '鮮鯛蛤蠣鍋',
-            '豬排風味鍋',
-            '沙茶魚頭鍋',
-            '藥膳排骨鍋',
-            '養生牛肉鍋',
-            '養生羊肉鍋',
-            '養生雞肉鍋',
-            '養生豬肉鍋'
-          ],
+            ['精緻豪華鍋',210],
+            ['花枝鮑魚鍋',180],
+            ['鮮蝦蛤蠣鍋',180],
+            ['鮮鯛蛤蠣鍋',180],
+            ['豬排風味鍋',170],
+            ['沙茶魚頭鍋',170],
+            ['藥膳排骨鍋',180],
+            ['養生牛肉鍋',170],
+            ['養生羊肉鍋',170],
+            ['養生雞肉鍋',170],
+            ['養生豬肉鍋',160]
+          ]
+        },
+        {
           alacarte:[
-            '白飯',
-            '冬粉',
-            '單點泡菜',
-            '單點大腸豬肚',
-            '蛤蠣',
-            '北海赤',
-            '魚卵捲',
-            '蝦丸',
-            '貢丸',
-            '魚丸',
-            '小香腸',
-            '魚板',
-            '魚餃',
-            '蛋餃',
-            '燕餃',
-            '意麵',
-            '拉麵',
-            '烏龍麵',
-            '科學麵',
-            '雞絲麵',
-            '臭豆腐',
-            '豆皮',
-            '鴨血',
-            '豆腐',
-            '米血',
-            '蛋',
-            '蝦子',
-            '牛肉',
-            '羊肉',
-            '豬肉',
-            '雞肉',
-            '老油條',
-            '金針菇',
-            '高麗菜',
-            '小白菜',
-            '豆芽菜',
-            '高湯',
-            '梅花豬',
-            '雞腿排',
-            '共鍋費',
+            ['白飯',10],
+            ['冬粉',20],
+            ['單點泡菜',30],
+            ['單點大腸豬肚',60],
+            ['蛤蠣',30],
+            ['北海赤',30],
+            ['魚卵捲',30],
+            ['蝦丸',30],
+            ['貢丸',20],
+            ['魚丸',20],
+            ['小香腸',20],
+            ['魚板',20],
+            ['魚餃',20],
+            ['蛋餃',30],
+            ['燕餃',30],
+            ['意麵',20],
+            ['拉麵',20],
+            ['烏龍麵',20],
+            ['科學麵',20],
+            ['雞絲麵',20],
+            ['臭豆腐',20],
+            ['豆皮',30],
+            ['鴨血',20],
+            ['豆腐',20],
+            ['米血',20],
+            ['蛋',10],
+            ['蝦子',50],
+            ['牛肉',80],
+            ['羊肉',80],
+            ['豬肉',50],
+            ['雞肉',60],
+            ['老油條',30],
+            ['金針菇',30],
+            ['高麗菜',30],
+            ['小白菜',30],
+            ['豆芽菜',30],
+            ['高湯',20],
+            ['梅花豬',80],
+            ['雞腿排',80],
+            ['共鍋費',20]
           ],
+        },
+        {
           soup:[
-            '咖哩',
-            '泡菜',
-            '茄汁',
-            '沙茶',
-            '麻辣',
-            '香茅',
-            '酸白菜',
-            '南瓜',
-            '起司牛奶',
-            '藥膳',
-            '豚骨',
-            '醇濃牛奶',
-            '南洋肉骨茶',
-            '大漠蒙古',
-            '壽喜燒',
-            '換臭豆腐'
+            ['咖哩',20],
+            ['泡菜',20],
+            ['茄汁',20],
+            ['沙茶',10],
+            ['麻辣',10],
+            ['香茅',20],
+            ['酸白菜',20],
+            ['南瓜',30],
+            ['起司牛奶',30],
+            ['藥膳',30],
+            ['豚骨',30],
+            ['醇濃牛奶',40],
+            ['南洋肉骨茶',40],
+            ['大漠蒙古',40],
+            ['壽喜燒',40],
+            ['換臭豆腐',10]
           ],
+        },
+        {
           noodle:[
-            '海鮮烏龍麵',
-            '海鮮雞絲麵',
-            '海鮮拉麵',
-            '海鮮意麵'
+            ['海鮮烏龍麵',110],
+            ['海鮮雞絲麵',110],
+            ['海鮮拉麵',110],
+            ['海鮮意麵',110]
           ]
         }
       ],
@@ -200,19 +259,23 @@ export default {
         }
       ],
       holder1:'',
-      viewdata:{
-        food:[],
-        id:0
-      },
+      viewdata:{},
     }
   },
   computed:{
+    view1(){
+
+      const vm = this
+      
+    }
   },
   methods:{
-    oper1Sending(item){
-      
+    special(item){
+      const vm = this
+      vm.viewdata = {item}
+      console.log(vm.viewdata)
     },
-    oper2Sending(holder1,item){
+    hotpot(){
       
     },
     clean(){
@@ -224,9 +287,5 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped lang="scss">
-@for $i from 1 through 10{
-  .col-xl-#{$i}{
-    width: $i * 10%;
-  }
-}
+
 </style>

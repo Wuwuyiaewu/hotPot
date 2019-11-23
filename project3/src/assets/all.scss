@@ -1,0 +1,28 @@
+// global
+*{
+    box-sizing: border-box;
+}
+// variable
+$grid-num:12;
+@for $i from 1 through $grid-num{
+  .col-xl-#{$i}{
+    padding: 0 15px;
+    width: 100% * ($i/$grid-num);
+  }
+}
+.container{
+    padding: 15px;
+}
+.row{
+    display: flex;
+    flex-wrap: wrap;
+    margin: 0 -15px;
+}
+$themesColor:(
+    'primary-bg':#C8D2D3,
+    'secondary-bg':#485C7D,
+    'primary-btn':#485C7D,
+    'secondary-btn':#4C2F1F,
+    'three-btn':#3F443E,
+    'four-btn':#C390A1
+)
