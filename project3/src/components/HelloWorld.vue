@@ -10,7 +10,9 @@
           </div>
           <!-- 點菜 -->
           <div class="row">
-            <div class="col-xl-12"></div>
+            <div class="col-xl-12" v-for="(item,key) in view2" :key="key">
+              {{item}}
+            </div>
           </div>
           <!-- 內用、外帶、修改 -->
           <div class="row">
@@ -21,20 +23,21 @@
         <div class="col-xl-6">
           <!-- 分類 -->
           <div class="row">
-            <div class="col-xl-4" v-for="item in oper1[0].special" :key="item" @click="special(item)"><button>{{item}}</button></div>
-            <div class="col-xl-4" v-for="(item,key) in oper1[1].hotpot" :key="key" @click="hotpot(item)"><button>{{item}}</button></div>
-            <div class="col-xl-4" v-for="(item,key) in oper1[2]" :key="key" @click="hotpot(item)"><button>{{item}}</button></div>
-            <div class="col-xl-4" v-for="(item,key) in oper1[3]" :key="key"><button>{{item}}</button></div>
-            <div class="col-xl-4" v-for="(item,key) in oper1[4]" :key="key"><button>{{item}}</button></div>
-            <div class="col-xl-4" v-for="(item,key) in oper1[5]" :key="key"><button>{{item}}</button></div>
-            <div class="col-xl-4" v-for="(item,key) in oper1[6]" :key="key"><button>{{item}}</button></div>
-            <div class="col-xl-4" v-for="(item,key) in oper1[7]" :key="key"><button>{{item}}</button></div>
+            <div class="col-xl-4" v-for="item in oper1[0]" :key="item" @click="dish('招牌',item)"><button>{{item}}</button></div>
+            <div class="col-xl-4" v-for="(item,key) in oper1[1].hotpot" :key="key" @click="dish('火鍋',item)"><button>{{item}}</button></div>
+            <div class="col-xl-4" v-for="(item,key) in oper1[2]" :key="key" @click="dish('火烤雙拼',item)"><button>{{item}}</button></div>
+            <div class="col-xl-4" v-for="(item,key) in oper1[3]" :key="key" @click="dish('壽喜燒系列',item)"><button>{{item}}</button></div>
+            <div class="col-xl-4" v-for="(item,key) in oper1[4]" :key="key" @click="dish('精緻火鍋',item)"><button>{{item}}</button></div>
+            <div class="col-xl-4" v-for="(item,key) in oper1[5]" :key="key" @click="dish('單點',item)"><button>{{item}}</button></div>
+            <div class="col-xl-4" v-for="(item,key) in oper1[6]" :key="key" @click="dish('湯頭',item)"><button>{{item}}</button></div>
+            <div class="col-xl-4" v-for="(item,key) in oper1[7]" :key="key" @click="dish('鍋燒麵類',item)"><button>{{item}}</button></div>
 
           </div>
           <!-- 細項 -->
           <div class="row">
             <h2>細項</h2>
             <div class="col-xl-3" v-for="(item,key) in view1" :key="key">
+              <button @click="sending(item)">{{item.name}}</button>
             </div>
           </div>
           <!-- 客製化 -->
@@ -54,12 +57,10 @@ export default {
     return {
       oper1: [
         { 
-          title:'招牌',
           special:
-          ['招牌系列']
+          '招牌系列'
         },
         {
-          title:'火鍋',
           hotpot:[
           '日式火鍋',
           '沙茶火鍋',
@@ -81,27 +82,21 @@ export default {
           ]
         },
         { 
-          title:'火烤雙拼',
           roast:'火烤雙拼'
         },
         { 
-          title:'壽喜燒',
           sukiyaki:'壽喜燒系列'
         },
         { 
-          title:'精緻火鍋',
           hightqty:'精緻火鍋'
         },
         { 
-          title:'單點',
           alacarte:'單點'
         },
         { 
-          title:'湯頭',
           soup:'湯頭'
         },
         { 
-          title:'鍋燒麵',
           noodle:'鍋燒麵類'
         }
       ],
@@ -260,23 +255,80 @@ export default {
       ],
       holder1:'',
       viewdata:{},
+      view2data:{}
     }
   },
   computed:{
     view1(){
-
       const vm = this
-      
+      if(vm.viewdata.name === '招牌'){
+        let obj = []
+        vm.oper2[0].special.forEach(el =>{
+          obj.push({name:el[0] ,price:el[1]})
+        })
+        return obj
+      }else if(vm.viewdata.name === '火鍋'){
+        let obj = []
+        vm.oper2[1].hotpot.forEach(el =>{
+          obj.push({name:el[0] + vm.viewdata.item ,price:el[1]})
+        })
+        return obj
+        // 練習二
+        // 推入陣列取得名稱與價錢
+      }else if(vm.viewdata.name === '火烤雙拼'){
+        let obj = []
+        vm.oper2[2].roast.forEach(el =>{
+          obj.push({name:el[0] + vm.viewdata.item ,price:el[1]})
+        })
+        return obj
+      }else if(vm.viewdata.name === '壽喜燒系列'){
+        let obj = []
+        vm.oper2[3].sukiyaki.forEach(el =>{
+          obj.push({name:el[0] + vm.viewdata.item ,price:el[1]})
+        })
+        return obj
+      }else if(vm.viewdata.name === '精緻火鍋'){
+        let obj = []
+        vm.oper2[4].hightqty.forEach(el =>{
+          obj.push({name:el[0] + vm.viewdata.item ,price:el[1]})
+        })
+        return obj
+      }else if(vm.viewdata.name === '單點'){
+        let obj = []
+        vm.oper2[5].alacarte.forEach(el =>{
+          obj.push({name:el[0] ,price:el[1]})
+        })
+        return obj
+      }else if(vm.viewdata.name === '湯頭'){
+        let obj = []
+        vm.oper2[6].soup.forEach(el =>{
+          obj.push({name:el[0] ,price:el[1]})
+        })
+        return obj
+      }else if(vm.viewdata.name === '鍋燒麵類'){
+        let obj = []
+        vm.oper2[7].noodle.forEach(el =>{
+          obj.push({name:el[0] + vm.viewdata.item ,price:el[1]})
+        })
+        return obj
+      }
+    },
+    view2(){
+      const vm = this
+      return vm.view2data
     }
   },
   methods:{
-    special(item){
+    dish(name,item){
       const vm = this
-      vm.viewdata = {item}
+      vm.viewdata = {name,item}
       console.log(vm.viewdata)
     },
-    hotpot(){
-      
+    sending(item){
+      const vm = this
+      vm.view2data.name = item.name
+      vm.view2data.price = item.price
+      console.log(vm.view2data)
     },
     clean(){
       
