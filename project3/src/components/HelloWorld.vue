@@ -6,13 +6,20 @@
         <div class="col-xl-6">
           <!-- 訂單價格 -->
           <div class="row">
-            <div class="col-xl-12"></div>
+            <div class="col-xl-12" >
+              <span v-text="view3">
+                總共{{view3}}元
+              </span> 
+            </div>
           </div>
           <!-- 點菜 -->
           <div class="row">
-            <div class="col-xl-12" v-for="(item,key) in view2" :key="key">
-              {{item}}
-            </div>
+            <template v-for="(item,key) in view2">
+                <tr class="col-xl-12 tr-color" :key="key" @click="focus(item)" :class="{'tr-focus':item.focus == true}">
+                  <td>{{item.name}}</td>
+                  <td>-價格{{item.price}}$</td>
+                </tr>
+            </template>
           </div>
           <!-- 內用、外帶、修改 -->
           <div class="row">
@@ -255,7 +262,8 @@ export default {
       ],
       holder1:'',
       viewdata:{},
-      view2data:{}
+      view2data:[],
+      view3data:'',
     }
   },
   computed:{
@@ -316,6 +324,14 @@ export default {
     view2(){
       const vm = this
       return vm.view2data
+    },
+    view3(){
+      const vm = this
+      let price = vm.view2data
+      return price.forEach(el=>{
+        return el.price += el.price
+      })
+      console.log(price)
     }
   },
   methods:{
@@ -326,9 +342,18 @@ export default {
     },
     sending(item){
       const vm = this
-      vm.view2data.name = item.name
-      vm.view2data.price = item.price
-      console.log(vm.view2data)
+      let content = {
+        name: item.name,
+        price: item.price
+      };
+      vm.view2data.push(content)
+    },
+    focus(item){
+      item.focus = true
+      // Vue.set(item,0,{
+      //   focus : true
+      // })
+      console.log(item)
     },
     clean(){
       
@@ -339,5 +364,20 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped lang="scss">
-
+.tr-focus{
+  background: rgb(248, 133, 204);
+}
+.tr-color{
+  &:hover{
+    cursor: pointer;
+    background-color: #aaa
+  }
+  &:nth-child(even){
+    background: #eee;
+    &:hover{
+      cursor: pointer;
+      background-color: #aaa
+    }
+  }
+}
 </style>
