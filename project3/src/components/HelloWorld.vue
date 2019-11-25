@@ -7,8 +7,11 @@
           <!-- 訂單價格 -->
           <div class="row">
             <div class="col-xl-12" >
-              <span v-text="view3">
+              <!-- <span v-text="view3">
                 總共{{view3}}元
+              </span>  -->
+              <span v-text="view4">
+                總共{{view4}}元
               </span> 
             </div>
           </div>
@@ -263,7 +266,6 @@ export default {
       holder1:'',
       viewdata:{},
       view2data:[],
-      view3data:'',
     }
   },
   computed:{
@@ -327,18 +329,26 @@ export default {
     },
     view3(){
       const vm = this
-      let price = vm.view2data
+      let price = Object.assign([],vm.view2data)
       return price.forEach(el=>{
         return el.price += el.price
       })
       console.log(price)
+    },
+    view4(){
+      const vm = this
+      const reducer = (accumulator, currentValue) => accumulator + currentValue
+      let price = []
+      price.push(vm.view2data.forEach(el=>{
+        return el.price
+      }))
+      return price.reduce(reducer)
     }
   },
   methods:{
     dish(name,item){
       const vm = this
       vm.viewdata = {name,item}
-      console.log(vm.viewdata)
     },
     sending(item){
       const vm = this
@@ -347,6 +357,7 @@ export default {
         price: item.price
       };
       vm.view2data.push(content)
+      console.log(vm.view2data)
     },
     focus(item){
       item.focus = true
