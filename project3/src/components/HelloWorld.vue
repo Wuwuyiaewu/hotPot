@@ -7,21 +7,18 @@
           <!-- 訂單價格 -->
           <div class="row">
             <div class="col-xl-12" >
-              <!-- <span v-text="view3">
+              <span v-if="view3 !== 0">
                 總共{{view3}}元
-              </span>  -->
-              <span v-text="view4">
-                總共{{view4}}元
               </span> 
             </div>
           </div>
           <!-- 點菜 -->
           <div class="row">
             <template v-for="(item,key) in view2">
-                <tr class="col-xl-12 tr-color" :key="key" @click="focus(item)" :class="{'tr-focus':item.focus == true}">
-                  <td>{{item.name}}</td>
-                  <td>-價格{{item.price}}$</td>
-                </tr>
+                <button class="col-xl-12 tr-color" :key="key" @click="coustom(item,key)" :class="{'tr-focus':item.focus}">
+                  <span>{{item.name}}</span>
+                  <span>-價格{{item.price}}$</span>
+                </button>
             </template>
           </div>
           <!-- 內用、外帶、修改 -->
@@ -43,16 +40,17 @@
             <div class="col-xl-4" v-for="(item,key) in oper1[7]" :key="key" @click="dish('鍋燒麵類',item)"><button>{{item}}</button></div>
 
           </div>
+          <hr>
           <!-- 細項 -->
           <div class="row">
-            <h2>細項</h2>
             <div class="col-xl-3" v-for="(item,key) in view1" :key="key">
               <button @click="sending(item)">{{item.name}}</button>
             </div>
           </div>
+          <hr>
           <!-- 客製化 -->
           <div class="row">
-            <div class="col-xl-2" v-for="(item,key) in oper3[0].type" :key="key"><button>{{item}}</button></div>
+            <div class="col-xl-2" v-for="(item,key) in oper3[0].type" :key="key" ><button @click="append(item)">{{item}}</button></div>
           </div>
         </div>
       </div>
@@ -266,6 +264,7 @@ export default {
       holder1:'',
       viewdata:{},
       view2data:[],
+      view3data:{}
     }
   },
   computed:{
@@ -329,20 +328,15 @@ export default {
     },
     view3(){
       const vm = this
-      let price = Object.assign([],vm.view2data)
-      return price.forEach(el=>{
-        return el.price += el.price
+      let priceItem = [];
+      let total;
+      vm.view2data.forEach(el=>{
+        return priceItem.push(el.price)
       })
-      console.log(price)
-    },
-    view4(){
-      const vm = this
-      const reducer = (accumulator, currentValue) => accumulator + currentValue
-      let price = []
-      price.push(vm.view2data.forEach(el=>{
-        return el.price
-      }))
-      return price.reduce(reducer)
+      let sum = priceItem.reduce((a,b)=>{
+        return a + b
+      },0)
+      return sum
     }
   },
   methods:{
@@ -354,17 +348,24 @@ export default {
       const vm = this
       let content = {
         name: item.name,
-        price: item.price
+        price: item.price,
       };
       vm.view2data.push(content)
-      console.log(vm.view2data)
     },
-    focus(item){
-      item.focus = true
-      // Vue.set(item,0,{
-      //   focus : true
-      // })
-      console.log(item)
+    coustom(item,key){
+      const vm = this
+      vm.view3data = {
+        name: item.name,
+        price: item.price,
+        key: key
+      }
+    },
+    append(item){
+      const vm = this
+      let key = vm.view3data.key
+      let name = item
+      console.log(key,name,vm.view2data)
+      vm.view2data[key].name = vm.view2data[key].name + `${name}`
     },
     clean(){
       
@@ -375,13 +376,13 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped lang="scss">
-.tr-focus{
-  background: rgb(248, 133, 204);
-}
 .tr-color{
   &:hover{
     cursor: pointer;
     background-color: #aaa
+  }
+  &:focus{
+    background: rgb(248, 133, 204) !important;
   }
   &:nth-child(even){
     background: #eee;
