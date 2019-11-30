@@ -81,7 +81,6 @@ export default {
   height: 0;
   transform: translateX(-100%);
   transition: all 0.2s;
-
 }
 .checkbox-r{
   width: 100%;
