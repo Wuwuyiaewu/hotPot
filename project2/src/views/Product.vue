@@ -4,7 +4,7 @@
             <div class="navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav justify-content-end">
                     <li class="nav-item active ">
-                        <a class="nav-link" href="#">美饌佳餚</a>
+                        <router-link to="product/card">美饌佳餚</router-link>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="#">購物車</a>
@@ -17,7 +17,7 @@
                 </ul>
             </div>
         </nav>
-        
+        <router-view/>
     </div>
 </template>
 
@@ -25,7 +25,7 @@
 export default {
     data(){
         return{
-
+            products:[],
         }
     },
     methods:{
@@ -38,6 +38,15 @@ export default {
                     vm.$router.push('/signin')
                 }else{
                     console.log('登出失敗')
+                }
+            })
+        },
+        getProducts(){
+            const url = `${process.env.VUE_APP_APIPATH}/api/${process.env.VUE_APP_USERPATH}/admin/product`
+            const vm = this
+            vm.axios.get(url).then(res=>{
+                if(res.data.success){
+                    console.log(res.data)
                 }
             })
         }

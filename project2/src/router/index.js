@@ -3,6 +3,7 @@ import VueRouter from 'vue-router'
 import Home from '../views/Home.vue'
 import Login from '../views/Login.vue'
 import Product from '../views/Product.vue'
+import Card from '../views/page/Card.vue'
 
 Vue.use(VueRouter)
 
@@ -26,7 +27,13 @@ const routes = [
     path: "/product",
     name: "product",
     component: Product,
-    meta: { requiredUser: true }
+    meta: { requiredUser: true },
+    children:[
+      {
+        path:"card",
+        component: Card
+      },
+    ]
   }
 ];
 
