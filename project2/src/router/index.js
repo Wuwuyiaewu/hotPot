@@ -31,7 +31,9 @@ const routes = [
     children:[
       {
         path:"card",
-        component: Card
+        component: Card,
+        name:"card",
+        meta: { requiredUser: true },
       },
     ]
   }

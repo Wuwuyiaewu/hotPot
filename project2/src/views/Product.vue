@@ -4,7 +4,7 @@
             <div class="navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav justify-content-end">
                     <li class="nav-item active ">
-                        <router-link to="product/card">美饌佳餚</router-link>
+                        <router-link to="/product/card">美饌佳餚</router-link>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="#">購物車</a>
@@ -42,14 +42,16 @@ export default {
             })
         },
         getProducts(){
-            const url = `${process.env.VUE_APP_APIPATH}/api/${process.env.VUE_APP_USERPATH}/admin/product`
+            const url = `${process.env.VUE_APP_APIPATH}/api/${process.env.VUE_APP_USERPATH}/admin/products`
             const vm = this
             vm.axios.get(url).then(res=>{
-                if(res.data.success){
-                    console.log(res.data)
-                }
+                console.log(res)
+                vm.products = res.data.products
             })
         }
+    },
+    created(){
+        this.getProducts()
     }
 }
 
