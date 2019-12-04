@@ -11,13 +11,13 @@
         <div class="col-xl-12 col-12"></div>
         <ul class="nav w-100 d-flex">
           <li class="nav-item">
-            <router-link to="/" class="nav-link active">Home</router-link>
+            <router-link to="/" class="nav-link active">便當、飯</router-link>
           </li>
           <li class="nav-item">
-            <router-link to="/about" class="nav-link">About</router-link>
+            <router-link to="/about" class="nav-link">麵、粄條</router-link>
           </li>
-          <li class="nav-item ml-auto pr-5">
-            <button type="button" class="btn btn-outline-secondary ">shopOrder</button>
+          <li class="nav-item">
+            <router-link to="/about" class="nav-link">麵、粄條</router-link>
           </li>
         </ul>
       </div>
