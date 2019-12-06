@@ -1,11 +1,8 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import Home from '../views/Home.vue'
-import About from '../views/About.vue'
 import Login from '../views/Login.vue'
 import Product from '../views/Product.vue'
-import Card from '../views/page/Card.vue'
-
+import Dashboard from '../views/Dashboard'
 Vue.use(VueRouter)
 
 const routes = [
@@ -15,34 +12,23 @@ const routes = [
     component: Login
   },
   {
-    path: "/",
-    name: "home",
-    component: Home
-  },
-  {
-    path: "/about",
-    name: "about",
-    component: About
+    path: "/admin",
+    name: "Dashboard",
+    component: Dashboard,
+    children:[
+      {
+        path: "product",
+        name: "product",
+        component: Product,
+        meta: { requiredUser: true },
+      }
+    ]
   },
   {
     path: "/signin",
     name: "login",
     component: Login
   },
-  {
-    path: "/product",
-    name: "product",
-    component: Product,
-    meta: { requiredUser: true },
-    children:[
-      {
-        path:"card",
-        component: Card,
-        name:"card",
-        meta: { requiredUser: true },
-      },
-    ]
-  }
 ];
 
 const router = new VueRouter({

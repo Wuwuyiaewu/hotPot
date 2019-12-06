@@ -36,7 +36,7 @@ export default {
             vm.axios.post(url,vm.user).then(res=>{
                 if(res.data.success){
                     console.log(res.data)
-                    vm.$router.push('/product')
+                    vm.$router.push('/admin')
                 }
             })
         }
