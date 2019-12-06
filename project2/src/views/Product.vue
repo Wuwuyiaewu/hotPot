@@ -1,23 +1,22 @@
 <template>
     <div>
-        <nav class="navbar navbar-expand-sm navbar-light bg-light">
-            <div class="navbar-collapse" id="navbarSupportedContent">
-                <ul class="navbar-nav justify-content-end">
-                    <li class="nav-item active ">
-                        <router-link to="/product/card">美饌佳餚</router-link>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">購物車</a>
-                    </li>
-                    <li class="nav-item">
-                        <button class="btn btn-success" @click="loginout">
-                            singout
-                        </button>
-                    </li>
-                </ul>
-            </div>
-        </nav>
-        <router-view/>
+        <table>
+            <thead>
+                <tr>
+                    <th width=100>餐點分類</th>
+                    <th width=130>餐點名稱</th>
+                    <th width=100>價格</th>
+                    <th width=100>是否啟用</th>
+                    <th width=100>編輯</th>
+                    <th width=100>刪除</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr v-for="(item,key) in products" :key="key">
+                    <td>{{item.category}}</td>
+                </tr>
+            </tbody>
+        </table>
     </div>
 </template>
 
