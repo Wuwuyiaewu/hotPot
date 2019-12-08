@@ -1,7 +1,7 @@
 <template>
     <div>
         <div class="text-right">
-            <button class="btn btn-primary mt-4 mb-2" @click="openModal">建立新產品</button>
+            <button class="btn btn-primary mt-4 mb-2" @click="openModal(true)">建立新產品</button>
         </div>
         <table class="table">
             <thead>
@@ -23,7 +23,9 @@
                         <span v-if="item.is_enabled">啟用</span>
                         <span v-else>未啟用</span>
                     </td>
-                    <td>{{item.category}}</td>
+                    <td>
+                        <button class="btn btn-outline-primary btn" @click="openModal(false,item)">編輯</button>
+                    </td>
                     <td>{{item.category}}</td>
                 </tr>
             </tbody>
@@ -159,7 +161,6 @@ export default {
             })
         },
         openModal(isNew,item){
-            $('#productModal').modal('show')
             if(isNew){
                 this.isNew = true
                 this.tempProduct = {}
@@ -167,15 +168,22 @@ export default {
                 this.isNew = false
                 this.tempProduct = Object.assign({},item)
             }
+            $('#productModal').modal('show')
         },
         updateProduct(){
-            const url = `${process.env.VUE_APP_APIPATH}/api/${process.env.VUE_APP_USERPATH}/admin/product`
+            let url = `${process.env.VUE_APP_APIPATH}/api/${process.env.VUE_APP_USERPATH}/admin/product`
+            let httpRe = 'post'
             const vm = this
-            vm.axios.post(url,{data:vm.tempProduct}).then(res=>{
+            if(!vm.isNew){
+                url = `${process.env.VUE_APP_APIPATH}/api/${process.env.VUE_APP_USERPATH}/admin/product/${vm.tempProduct.id}`
+                httpRe = 'put'
+            }
+            vm.axios[httpRe](url,{data:vm.tempProduct}).then(res=>{
                 if(res.data.success){
                     $('#productModal').modal('hide')
                     vm.getProducts()
                 }else{
+                    $('#productModal').modal('hide')
                     vm.getProducts()
                     console.log('訊息失敗')
                 }
