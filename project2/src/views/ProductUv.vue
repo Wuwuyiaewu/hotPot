@@ -124,6 +124,7 @@
                 </div>
             </div>
         </div>
+            
         <!-- 模板觸發 預設隱藏end -->
     </div>
 </template>
@@ -135,7 +136,7 @@ export default {
         return{
             products:[],
             tempProduct:{},
-            isNew:true
+            isNew:false
         }
     },
     methods:{
@@ -161,33 +162,32 @@ export default {
         },
         openModal(isNew,item){
             if(isNew){
-                this.tempProduct = {}
                 this.isNew = true
+                this.tempProduct = {}
             }else{
-                this.tempProduct = Object.assign({},item)
                 this.isNew = false
+                this.tempProduct = Object.assign({},item)
             }
             $('#productModal').modal('show')
         },
         updateProduct(){
             let url = `${process.env.VUE_APP_APIPATH}/api/${process.env.VUE_APP_USERPATH}/admin/product`
+            let httpRe = 'post'
             const vm = this
-            let httpMs = 'post'
             if(!vm.isNew){
                 url = `${process.env.VUE_APP_APIPATH}/api/${process.env.VUE_APP_USERPATH}/admin/product/${vm.tempProduct.id}`
-                httpMs = 'put'
-
+                httpRe = 'put'
             }
-            vm.axios[httpMs](url,{data:vm.tempProduct}).then(res=>{
+            vm.axios[httpRe](url,{data:vm.tempProduct}).then(res=>{
                 if(res.data.success){
-                    vm.products = res.data.products
+                    $('#productModal').modal('hide')
                     vm.getProducts()
                 }else{
-                    console.log(res.data)
+                    $('#productModal').modal('hide')
                     vm.getProducts()
+                    console.log('訊息失敗')
                 }
             })
-            $('#productModal').modal('hide')
         }
     },
     created(){
