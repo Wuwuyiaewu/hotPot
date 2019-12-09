@@ -26,7 +26,9 @@
                     <td>
                         <button class="btn btn-outline-primary btn" @click="openModal(false,item)">編輯</button>
                     </td>
-                    <td>{{item.category}}</td>
+                    <td>
+                        <button class="btn btn-outline-primary btn" @click="delModal(false,item)">刪除</button>
+                    </td>
                 </tr>
             </tbody>
         </table>
@@ -125,6 +127,24 @@
             </div>
         </div>
         <!-- 模板觸發 預設隱藏end -->
+        <!-- 刪除模板start -->
+        <div class="modal fade" id="delModal" tabindex="-1" role="dialog"
+            aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-lg" role="document">
+                <div class="modal-content border-0">
+                <div class="modal-body">
+                    <div class="row">
+                    <h1>是否刪除呢?</h1>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">取消</button>
+                    <button type="button" class="btn btn-primary" @click="delProduct">確認</button>
+                </div>
+                </div>
+            </div>
+        </div>
+        <!-- 刪除模板end -->
     </div>
 </template>
 
@@ -176,7 +196,6 @@ export default {
             if(!vm.isNew){
                 url = `${process.env.VUE_APP_APIPATH}/api/${process.env.VUE_APP_USERPATH}/admin/product/${vm.tempProduct.id}`
                 httpMs = 'put'
-
             }
             vm.axios[httpMs](url,{data:vm.tempProduct}).then(res=>{
                 if(res.data.success){
@@ -188,6 +207,23 @@ export default {
                 }
             })
             $('#productModal').modal('hide')
+        },
+        delModal(isNew,item){
+            this.tempProduct = Object.assign({},item)
+            this.isNew = false
+            $('#delModal').modal('show')
+        },
+        delProduct(){
+            const vm = this
+            let url = `${process.env.VUE_APP_APIPATH}/api/${process.env.VUE_APP_USERPATH}/admin/product/${vm.tempProduct.id}`
+            vm.axios.delete(url).then(res=>{
+                if(res.data.success){
+                    vm.getProducts()
+                }else{
+                    console.log(res.data)
+                }
+            })
+            $('#delModal').modal('hide')
         }
     },
     created(){
