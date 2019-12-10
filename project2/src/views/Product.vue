@@ -228,7 +228,24 @@ export default {
             $('#delModal').modal('hide')
         },
         upload(){
-            console.log(this)
+            const vm = this
+            let url = `${process.env.VUE_APP_APIPATH}/api/${process.env.VUE_APP_USERPATH}/admin/upload`
+            const uploadFile = vm.$refs.files.files[0]
+            const formData = new FormData();
+            formData.append('file-to-upload',uploadFile)
+            vm.axios.post(url,formData,{
+                headers:{
+                    'Content-Type':'multipart/form-data'
+                }
+            }).then(res=>{
+                if(res.data.success){
+                    vm.tempProduct.imageUrl = res.data.imageUrl
+                    vm.$set()
+                    console.log(res.data)
+                }
+            })
+
+
         }
         // 上傳圖片
     },
