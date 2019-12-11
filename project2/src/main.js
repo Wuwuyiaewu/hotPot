@@ -7,9 +7,13 @@ import 'bootstrap'
 import router from './router'
 import axios from 'axios'
 import VueAxios from 'vue-axios'
+// Import component
+import Loading from 'vue-loading-overlay';
+// Import stylesheet
+import 'vue-loading-overlay/dist/vue-loading.css';
 
 Vue.use(VueAxios, axios)
-
+Vue.component('Loading', Loading)
 
 Vue.config.productionTip = false
 axios.defaults.withCredentials = true;

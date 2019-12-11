@@ -1,5 +1,7 @@
 <template>
     <div>
+        <!-- 若要載入僅需 -->
+        <loading :active.sync="isLoading"></loading>
         <div class="text-right">
             <button class="btn btn-primary mt-4 mb-2" @click="openModal(true)">建立新產品</button>
         </div>
@@ -15,6 +17,9 @@
                 </tr>
             </thead>
             <tbody>
+                <!-- 為每個資料做雙向綁定 -->
+                <!-- 綁定陣列為 products -->
+                <!-- 帶入數值名稱為 item -->
                 <tr v-for="(item,key) in products" :key="key">
                     <td>{{item.category}}</td>
                     <td>{{item.title}}</td>
@@ -24,9 +29,13 @@
                         <span v-else>未啟用</span>
                     </td>
                     <td>
+                        <!-- 傳入數值 -->
+                        <!-- 並且判定為假 -->
                         <button class="btn btn-outline-primary btn" @click="openModal(false,item)">編輯</button>
                     </td>
                     <td>
+                        <!-- 傳入數值 -->
+                        <!-- 並且判定為假 -->
                         <button class="btn btn-outline-primary btn" @click="delModal(false,item)">刪除</button>
                     </td>
                 </tr>
@@ -56,7 +65,15 @@
                         </div>
                         <div class="form-group">
                         <label for="customFile">或 上傳圖片
-                            <i class="fas fa-spinner fa-spin"></i>
+                            <!-- font awosome icon 載入處 -->
+                            <!-- 設定v-if搭配狀態讀取時間差 -->
+                            <!-- font awosome 裡面的 doc 有資料可以看 -->
+                            <!-- index.html 內有 script 可以預先載入 cdn -->
+                            <span class="fa-stack fa-1x" v-if="status.fileUploading">
+                                <!-- 搭配各種樣式做變化效果 -->
+                                <i class="far fa-circle fa-stack-2x" v-if="status.fileUploading"></i>
+                                <i class="fas fa-fan fa-spin" v-if="status.fileUploading"></i>
+                            </span>
                         </label>
                         <input type="file" id="customFile" class="form-control"
                             ref="files" @change="upload">
@@ -155,7 +172,11 @@ export default {
         return{
             products:[],
             tempProduct:{},
-            isNew:true
+            isNew:true,
+            isLoading:false,
+            status:{
+                fileUploading:false,
+            }
         }
     },
     methods:{
@@ -172,34 +193,62 @@ export default {
             })
         },
         getProducts(){
+            // 取得產品路徑
             const url = `${process.env.VUE_APP_APIPATH}/api/${process.env.VUE_APP_USERPATH}/admin/products`
             const vm = this
+            // 讀取開始使用loading
+            vm.isLoading = true
             vm.axios.get(url).then(res=>{
                 console.log(res)
+                // 產品陣列等於取的api的陣列
                 vm.products = res.data.products
+                // 讀取完成後結束loading
+                vm.isLoading = false
+
             })
         },
+        // 打開模板
+        // 是否是新的
+        // 有傳入物件數值則帶入
         openModal(isNew,item){
             if(isNew){
+                // 有isNew數值為"真"代表新增產品
+                // 為暫存設定空物件
                 this.tempProduct = {}
+                // 是否為新值判定為新
+                // 並連帶影響更新 updateProduct
                 this.isNew = true
             }else{
+                // isNew數值為"假"代表新增產品
+                // 為暫存設定放入item物件
+                // 避免傳參考發生，所以使用es6方法 Object.assign
                 this.tempProduct = Object.assign({},item)
                 this.isNew = false
             }
             $('#productModal').modal('show')
         },
+        // 更新資料
+        // 送出資料
         updateProduct(){
+            // 連結為新增時的url路徑
             let url = `${process.env.VUE_APP_APIPATH}/api/${process.env.VUE_APP_USERPATH}/admin/product`
             const vm = this
+            // 方法為post
             let httpMs = 'post'
+            // 但 isNew 不為真的時候 url 與 方法 都需要更改為 put 適用
             if(!vm.isNew){
+                // 為 put 抓取指定位置
                 url = `${process.env.VUE_APP_APIPATH}/api/${process.env.VUE_APP_USERPATH}/admin/product/${vm.tempProduct.id}`
+                // 方法為 put
                 httpMs = 'put'
             }
+            // 替 axios 做方法變數 與 路徑變數 和相對應的 data api 格式
             vm.axios[httpMs](url,{data:vm.tempProduct}).then(res=>{
                 if(res.data.success){
+                    // 若成功
+                    // 推入陣列
                     vm.products = res.data.products
+                    // 重新取得資料
                     vm.getProducts()
                 }else{
                     console.log(res.data)
@@ -210,6 +259,8 @@ export default {
         },
         // 打開刪除介面
         delModal(isNew,item){
+            // 將資料傳入暫存區
+            // 方便刪除時候可以抓取 id位置
             this.tempProduct = Object.assign({},item)
             this.isNew = false
             $('#delModal').modal('show')
@@ -217,9 +268,12 @@ export default {
         // 刪除api
         delProduct(){
             const vm = this
+            // 傳入 url 位置
             let url = `${process.env.VUE_APP_APIPATH}/api/${process.env.VUE_APP_USERPATH}/admin/product/${vm.tempProduct.id}`
+            // 更改方法為刪除
             vm.axios.delete(url).then(res=>{
                 if(res.data.success){
+                    // 重新整理畫面
                     vm.getProducts()
                 }else{
                     console.log(res.data)
@@ -229,19 +283,29 @@ export default {
         },
         upload(){
             const vm = this
+            // 圖片上傳時讀取 icon
+            vm.status.fileUploading = true
+            // 設定 url 路徑
             let url = `${process.env.VUE_APP_APIPATH}/api/${process.env.VUE_APP_USERPATH}/admin/upload`
+            // 設定檔案
+            // 找出檔案位置
             const uploadFile = vm.$refs.files.files[0]
+            // 建構新的 FormData 變數
             const formData = new FormData();
+            // 為 formData 變數 append 上名稱與檔案
             formData.append('file-to-upload',uploadFile)
+            // 為方法設定 路徑 與 檔案 和 格式
             vm.axios.post(url,formData,{
                 headers:{
                     'Content-Type':'multipart/form-data'
                 }
             }).then(res=>{
                 if(res.data.success){
-                    vm.tempProduct.imageUrl = res.data.imageUrl
-                    vm.$set()
-                    console.log(res.data)
+                    // 強制寫入暫存 並找到名稱 做更新的動作
+                    vm.$set(vm.tempProduct,'imageUrl',res.data.imageUrl)
+                    // 同時在這步驟對 lodaing 狀態 icon 關閉
+                    vm.status.fileUploading = false
+                    console.log(vm.tempProduct)
                 }
             })
 
