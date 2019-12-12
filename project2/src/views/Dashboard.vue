@@ -1,5 +1,6 @@
 <template>
     <div>
+      <Alert></Alert>
         <div class="container-fluid">
             <nav class="navbar navbar-dark fixed-top bg-dark flex-md-nowrap p-0 shadow">
                 <a class="navbar-brand col-sm-4 col-md-2 mr-0" href="#">Company</a>
@@ -64,8 +65,11 @@
 </template>
 
 <script>
+import Alert from './AlertMessage'
 export default {
-    
+  components:{
+    Alert
+  }
 }
 </script>
 

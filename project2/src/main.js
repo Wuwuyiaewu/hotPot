@@ -11,8 +11,10 @@ import VueAxios from 'vue-axios'
 import Loading from 'vue-loading-overlay';
 // Import stylesheet
 import 'vue-loading-overlay/dist/vue-loading.css';
-
+// 引入 event bus 事件
+import './bus'
 Vue.use(VueAxios, axios)
+// 開啟全域變數
 Vue.component('Loading', Loading)
 
 Vue.config.productionTip = false
