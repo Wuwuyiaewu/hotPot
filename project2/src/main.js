@@ -14,10 +14,12 @@ import 'vue-loading-overlay/dist/vue-loading.css';
 // 引入 event bus 
 // 得到該原型
 import './bus'
+// 註冊全域 Filter currency
+import currencyFilter from './filters/currency'
 Vue.use(VueAxios, axios)
 // 開啟全域變數
 Vue.component('Loading', Loading)
-
+Vue.filter('currency', currencyFilter)
 Vue.config.productionTip = false
 axios.defaults.withCredentials = true;
 new Vue({

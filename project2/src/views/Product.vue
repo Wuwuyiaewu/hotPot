@@ -23,7 +23,8 @@
                 <tr v-for="(item,key) in products" :key="key">
                     <td>{{item.category}}</td>
                     <td>{{item.title}}</td>
-                    <td class="text-right">{{item.price}}</td>
+                    <!-- 套用 filter 千分號過濾 -->
+                    <td class="text-right">{{item.price | currency}}</td>
                     <td>
                         <span v-if="item.is_enabled">啟用</span>
                         <span v-else>未啟用</span>
