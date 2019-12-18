@@ -69,6 +69,8 @@
                 </li>
             </ul>
         </nav>
+        <!-- 元件化 -->
+        <Pagination :paginationComponent="pagination" @sendPre="getProducts" @sendNext="getProducts"></Pagination>
         <!-- 模板觸發 預設隱藏start -->
         <!-- Modal -->
         <div class="modal fade" id="productModal" tabindex="-1" role="dialog"
@@ -195,8 +197,12 @@
 
 <script>
 import $ from 'jquery'
+import Pagination from './page/Pagination'
 
 export default {
+    components:{
+        Pagination
+    },
     data(){
         return{
             products:[],
