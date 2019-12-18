@@ -41,8 +41,6 @@
                 </tr>
             </tbody>
         </table>
-<<<<<<< Updated upstream
-=======
         <!-- 分頁元件 -->
         <nav aria-label="Page navigation example">
             <ul class="pagination">
@@ -71,7 +69,6 @@
             </ul>
         </nav>
         <Pagination :paginationComponent="pagination"></Pagination>
->>>>>>> Stashed changes
         <!-- 模板觸發 預設隱藏start -->
         <!-- Modal -->
         <div class="modal fade" id="productModal" tabindex="-1" role="dialog"
@@ -198,11 +195,7 @@
 
 <script>
 import $ from 'jquery'
-<<<<<<< Updated upstream
-=======
 
-
->>>>>>> Stashed changes
 export default {
     data(){
         return{
