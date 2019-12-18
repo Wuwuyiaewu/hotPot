@@ -68,7 +68,6 @@
                 </li>
             </ul>
         </nav>
-        <Pagination :paginationComponent="pagination"></Pagination>
         <!-- 模板觸發 預設隱藏start -->
         <!-- Modal -->
         <div class="modal fade" id="productModal" tabindex="-1" role="dialog"
