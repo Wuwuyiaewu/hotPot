@@ -220,9 +220,9 @@ export default {
                 }
             })
         },
-        getProducts(){
+        getProducts(page = 1){
             // 取得產品路徑
-            const url = `${process.env.VUE_APP_APIPATH}/api/${process.env.VUE_APP_USERPATH}/admin/products`
+            const url = `${process.env.VUE_APP_APIPATH}/api/${process.env.VUE_APP_USERPATH}/admin/products?page=${page}`
             const vm = this
             // 讀取開始使用loading
             vm.isLoading = true
@@ -232,7 +232,7 @@ export default {
                 vm.products = res.data.products
                 // 讀取完成後結束loading
                 vm.isLoading = false
-
+                vm.pagination = res.data.pagination
             })
         },
         // 打開模板
