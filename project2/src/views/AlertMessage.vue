@@ -22,11 +22,7 @@ export default {
     return {
       // 定義 message 為陣列
       // 方便後續推入 (push) 內容進去
-      messages: [{
-        message: '內容',
-        status: 'danger',
-        timestamp: '123'
-      }],
+      messages: [],
     };
   },
   methods: {
@@ -37,7 +33,7 @@ export default {
       this.messages.push({
         message,
         status,
-        timestamp,
+        timestamp
       });
       // 訊息跳出後，過一段時間必須移除
       this.removeMessageWithTiming(timestamp);

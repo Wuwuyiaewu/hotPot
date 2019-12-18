@@ -11,7 +11,8 @@ import VueAxios from 'vue-axios'
 import Loading from 'vue-loading-overlay';
 // Import stylesheet
 import 'vue-loading-overlay/dist/vue-loading.css';
-// 引入 event bus 事件
+// 引入 event bus 
+// 得到該原型
 import './bus'
 Vue.use(VueAxios, axios)
 // 開啟全域變數

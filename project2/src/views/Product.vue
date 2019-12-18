@@ -305,7 +305,9 @@ export default {
                     vm.$set(vm.tempProduct,'imageUrl',res.data.imageUrl)
                     // 同時在這步驟對 lodaing 狀態 icon 關閉
                     vm.status.fileUploading = false
-                    console.log(vm.tempProduct)
+                }else{
+                    // 此處使用 this 會是不同位置需要特別注意
+                    // res.data.message 會是訊息提示
                 }
             })
 
@@ -315,6 +317,7 @@ export default {
     },
     created(){
         this.getProducts()
+
     }
 }
 

@@ -184,7 +184,9 @@ export default {
                     vm.getProducts()
                 }else{
                     $('#productModal').modal('hide')
+
                     vm.getProducts()
+                    
                     console.log('訊息失敗')
                 }
             })
