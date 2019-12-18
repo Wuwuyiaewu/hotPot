@@ -41,6 +41,30 @@
                 </tr>
             </tbody>
         </table>
+        <!-- 分頁元件 -->
+        <nav aria-label="Page navigation example">
+            <ul class="pagination">
+                <!-- 回到前一頁面也是根據 api 回傳真或假值去做判斷 -->
+                <!-- 並綁定上動態 class -->
+                <li class="page-item" :class="{'disabled':!pagination.has_pre}">
+                <a class="page-link" href="#" aria-label="Previous">
+                    <span aria-hidden="true">&laquo;</span>
+                </a>
+                </li>
+                <!-- api 會傳回 pagination.total_pages 的總共頁數 -->
+                <!-- 必須在 li 部分綁上 class 樣式 並做判斷 -->
+                <!-- 在 a 連結部分加上 click事件 getProducts(page)  達到切換 page-->
+                <li class="page-item" v-for="page in pagination.total_pages" :key="page"  :class="[{'active':pagination.current_page === page}]">
+                    <a class="page-link" href="#" @click.prevent="getProducts(page)">{{page}}</a>
+                    </li>
+                <li class="page-item" :class="{'disabled':!pagination.has_next}">
+                    <a class="page-link" href="#" aria-label="Next">
+                        <span aria-hidden="true">&raquo;</span>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+        <Pagination :paginationComponent="pagination"></Pagination>
         <!-- 模板觸發 預設隱藏start -->
         <!-- Modal -->
         <div class="modal fade" id="productModal" tabindex="-1" role="dialog"
@@ -165,26 +189,64 @@
     </div>
 </template>
 
+<script type="text/x-template" id="photo">
+    <div>
+        <nav aria-label="Page navigation example">
+            <ul class="pagination">
+                <li class="page-item" :class="{'disabled':!paginationComponent.has_pre}">
+                <a class="page-link" href="#" aria-label="Previous">
+                    <span aria-hidden="true">&laquo;</span>
+                </a>
+                </li>
+                <li class="page-item" v-for="page in paginationComponent.total_pages" :key="page"  :class="[{'active':paginationComponent.current_page === page}]">
+                    <a class="page-link" href="#" @click.prevent="getProducts(page)">{{page}}</a>
+                    </li>
+                <li class="page-item" :class="{'disabled':!paginationComponent.has_next}">
+                    <a class="page-link" href="#" aria-label="Next">
+                        <span aria-hidden="true">&raquo;</span>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+    </div>
+</script>
+
 <script>
 import $ from 'jquery'
+
+
+import Pagination from './page/Pagination'
+
+Vue.component('Pagination',{
+    props:['paginationComponent'],
+    template:'#photo'
+})
+
 export default {
     data(){
         return{
+            // 產品 api 儲存陣列
             products:[],
+            // 暫純 modal 狀態
             tempProduct:{},
+            // 設定是否為新舊值狀態
             isNew:true,
+            // 設定 loading 狀態
             isLoading:false,
+            // 設定狀態上傳狀態
             status:{
                 fileUploading:false,
-            }
+            },
+            // 設定分頁儲存陣列
+            pagination:[]
         }
     },
+    
     methods:{
         loginout(){
             const vm = this
             const url = `${process.env.VUE_APP_APIPATH}/logout`
             vm.axios.post(url).then(res=>{
-                console.log(res.data)
                 if(res.data.success){
                     vm.$router.push('/signin')
                 }else{
@@ -192,9 +254,11 @@ export default {
                 }
             })
         },
-        getProducts(){
+        // 取得後台產品，並配合 click 事件 搭配頁數
+        getProducts(page = 1 ){
             // 取得產品路徑
-            const url = `${process.env.VUE_APP_APIPATH}/api/${process.env.VUE_APP_USERPATH}/admin/products`
+            // 補上 page 頁數去配合 pagination 使用
+            const url = `${process.env.VUE_APP_APIPATH}/api/${process.env.VUE_APP_USERPATH}/admin/products?page=${page}`
             const vm = this
             // 讀取開始使用loading
             vm.isLoading = true
@@ -204,7 +268,7 @@ export default {
                 vm.products = res.data.products
                 // 讀取完成後結束loading
                 vm.isLoading = false
-
+                vm.pagination = res.data.pagination
             })
         },
         // 打開模板
