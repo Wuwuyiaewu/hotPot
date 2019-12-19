@@ -6,7 +6,7 @@
             <li class="page-item" :class="{'disabled':!pagedata.has_pre}">
                 <!-- 利用css 阻止 current_page 不足時候觸發  -->
                 <!-- 抓取current 去更改 page -->
-            <a class="page-link" href="#" aria-label="Previous" @click.prevent="getProducts">
+            <a class="page-link" href="#" aria-label="Previous" @click.prevent="getProducts(pagedata.current_page - 1)">
                 <span aria-hidden="true">&laquo;</span>
             </a>
             </li>
@@ -19,7 +19,7 @@
             <li class="page-item" :class="{'disabled':!pagedata.has_next}">
                 <!-- 利用css 阻止 current_page 不足時候觸發  -->
                 <!-- 抓取current 去更改 page -->
-                <a class="page-link" href="#" aria-label="Next" @click.prevent="getProducts">
+                <a class="page-link" href="#" aria-label="Next" @click.prevent="getProducts(pagedata.current_page + 1)">
                     <span aria-hidden="true">&raquo;</span>
                 </a>
             </li>
