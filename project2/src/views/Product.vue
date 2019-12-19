@@ -70,7 +70,7 @@
             </ul>
         </nav>
         <!-- 元件化 -->
-        <Pagination :paginationComponent="pagination" @sendPre="getProducts" @sendNext="getProducts"></Pagination>
+        <Pagination @increment="getProducts" :pagedata="pagination.total_pages"></Pagination>
         <!-- 模板觸發 預設隱藏start -->
         <!-- Modal -->
         <div class="modal fade" id="productModal" tabindex="-1" role="dialog"
@@ -211,7 +211,8 @@ export default {
             isLoading:false,
             status:{
                 fileUploading:false,
-            }
+            },
+            pagination:[]
         }
     },
     methods:{
