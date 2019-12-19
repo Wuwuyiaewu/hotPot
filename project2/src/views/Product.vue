@@ -205,7 +205,8 @@ export default {
             isLoading:false,
             status:{
                 fileUploading:false,
-            }
+            },
+            pagination:{}
         }
     },
     methods:{
@@ -234,6 +235,7 @@ export default {
                 // 讀取完成後結束loading
                 vm.isLoading = false
                 vm.pagination = res.data.pagination
+                console.log(vm.pagination)
             })
         },
         // 打開模板
@@ -337,6 +339,8 @@ export default {
                 }else{
                     // 此處使用 this 會是不同位置需要特別注意
                     // res.data.message 會是訊息提示
+                    console.log(res.data)
+                    vm.$bus.$emit('message:push',res.data.message,'danger');
                 }
             })
 

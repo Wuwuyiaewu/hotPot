@@ -18,7 +18,10 @@ import './bus'
 import currencyFilter from './filters/currency'
 Vue.use(VueAxios, axios)
 // 開啟全域變數
+// 在任何頁面都可以使用 Loading 標籤
 Vue.component('Loading', Loading)
+// 開啟全域過濾
+// 任何變數都可以套用 | currency
 Vue.filter('currency', currencyFilter)
 Vue.config.productionTip = false
 axios.defaults.withCredentials = true;
