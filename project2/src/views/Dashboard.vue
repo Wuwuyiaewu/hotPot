@@ -1,74 +1,22 @@
 <template>
     <div>
       <Alert></Alert>
-        <div class="container-fluid">
-            <nav class="navbar navbar-dark fixed-top bg-dark flex-md-nowrap p-0 shadow">
-                <a class="navbar-brand col-sm-4 col-md-2 mr-0" href="#">Company</a>
-                <input class="form-control form-control-dark w-100 col-sm-6" type="text" placeholder="Search" aria-label="Search">
-                <ul class="navbar-nav px-3 col-sm-2">
-                    <li class="nav-item text-nowrap ">
-                        <a class="nav-link" href="#">Sign out</a>
-                    </li>
-                </ul>
-            </nav>
-        </div>
-    <div class="container-fluid mt-5">
-      <div class="row">
-        <nav class="col-md-2 bg-light sidebar">
-          <div class="sidebar-sticky">
-            <ul class="nav flex-column">
-              <li class="nav-item">
-                <router-link to="/admin/product">產品列表</router-link>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="#">
-                  <span data-feather="bar-chart-2"></span>
-                  Reports
-                </a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="#">
-                  <span data-feather="layers"></span>
-                  Integrations
-                </a>
-              </li>
-            </ul>
-            <!-- 側邊欄位 -->
-            <h6 class="sidebar-heading d-flex justify-content-between align-items-center px-3 mt-4 mb-1 text-muted">
-              <span>Saved reports</span>
-              <a class="d-flex align-items-center text-muted" href="#">
-                <span data-feather="plus-circle"></span>
-              </a>
-            </h6>
-            <ul class="nav flex-column mb-2">
-              <li class="nav-item">
-                <a class="nav-link" href="#">
-                  <span data-feather="file-text"></span>
-                  Current month
-                </a>
-              </li>
-              <li class="nav-item">
-                <a class="nav-link" href="#">
-                  <span data-feather="file-text"></span>
-                  Last quarter
-                </a>
-              </li>
-            </ul>
-          </div>
-        </nav>
-      </div>
-        <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-4">
-            <router-view></router-view>
-        </main>
-    </div>
+        <Navbar />
+        <Sidebar />
+        
+    
     </div>
 </template>
 
 <script>
 import Alert from './AlertMessage'
+import Sidebar from './page/Navbar'
+import Navbar from './page/Sidebar'
 export default {
   components:{
-    Alert
+    Alert,
+    Sidebar,
+    Navbar
   }
 }
 </script>
