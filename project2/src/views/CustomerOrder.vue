@@ -28,11 +28,11 @@
                 </div>
                 <div class="card-footer d-flex">
                     <button type="button" class="btn btn-outline-secondary btn-sm" @click="getProduct(item.id)">
-                    <i class="fas fa-spinner fa-spin"></i>
+                    <i class="fas fa-spinner fa-spin" v-if="status.loadingItem === item.id"></i>
                     查看更多
                     </button>
                     <button type="button" class="btn btn-outline-danger btn-sm ml-auto">
-                    <i class="fas fa-spinner fa-spin"></i>
+                    <i class="fas fa-spinner fa-spin" v-if="status.loadingItem === item.id"></i>
                     加到購物車
                     </button>
                 </div>
@@ -50,7 +50,7 @@
                 </button>
               </div>
               <div class="modal-body">
-                <img :src="product.image" class="img-fluid" alt="">
+                <img :src="product.imageUrl" class="img-fluid" alt="">
                 <blockquote class="blockquote mt-3">
                   <p class="mb-0">{{ product.content }}</p>
                   <footer class="blockquote-footer text-right">{{ product.description }}</footer>
@@ -84,6 +84,7 @@
 
 <script>
 import $ from 'jquery'
+
 export default {
   data() {
     return {
@@ -91,6 +92,9 @@ export default {
       products: [],
       // 單一商品
       product:[],
+      status: {
+        loadingItem: '',
+      },
       isLoading: false,
     };
   },
@@ -113,12 +117,18 @@ export default {
       const url = `${process.env.VUE_APP_APIPATH}/api/${process.env.VUE_APP_USERPATH}/product/${id}`;
     //   觸發 loading 效果 :active.sync="isLoading"
       vm.isLoading = true;
+      // 查看購物車的 icon spin 是否顯示倚靠 id 是否等於該查看 id
+      vm.status.loadingItem = id
       this.$http.get(url).then((response) => {
         vm.product = response.data.product;
-        // 打開 modal
+        // 要打開 modal 使用 $ 必須要 import jquery
         $('#productModal').modal('show')
+        // 打開 modal
         console.log(response);
+        // 設定假值 isLoading (因為比對是依據 v-if 真假數值)
         vm.isLoading = false;
+        // 設定空數 icon (因為比對是依據 v-if ===)
+        vm.status.loadingItem = ''
       });
     },
   },

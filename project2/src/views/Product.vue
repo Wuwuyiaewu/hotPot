@@ -216,6 +216,7 @@ export default {
             vm.axios.post(url).then(res=>{
                 console.log(res.data)
                 if(res.data.success){
+                    // 但其實是因為登入頁設定是 *
                     vm.$router.push('/signin')
                 }else{
                     console.log('登出失敗')
@@ -229,13 +230,18 @@ export default {
             // 讀取開始使用loading
             vm.isLoading = true
             vm.axios.get(url).then(res=>{
-                console.log(res)
-                // 產品陣列等於取的api的陣列
-                vm.products = res.data.products
-                // 讀取完成後結束loading
-                vm.isLoading = false
-                vm.pagination = res.data.pagination
-                console.log(vm.pagination)
+                if(res.data.success){
+                    console.log(res)
+                    // 產品陣列等於取的api的陣列
+                    vm.products = res.data.products
+                    // 讀取完成後結束loading
+                    vm.isLoading = false
+                    vm.pagination = res.data.pagination
+                }else{
+                    // 但其實是因為登入頁設定是 *
+                    vm.$router.push('/signin')
+                    console.log(res)
+                }
             })
         },
         // 打開模板
