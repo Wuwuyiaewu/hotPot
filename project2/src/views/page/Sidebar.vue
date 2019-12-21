@@ -15,16 +15,10 @@
                         <router-link to="/admin/product" class="nav-link"><i class="fas fa-boxes"></i>產品列表</router-link>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#">
-                        <span data-feather="bar-chart-2"></span>
-                        訂單列表
-                        </a>
+                        <router-link to="/admin/coupon" class="nav-link"><i class="fas fa-boxes"></i>訂單列表</router-link>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#">
-                        <span data-feather="layers"></span>
-                        優惠券
-                        </a>
+                        <router-link to="/admin/coupon" class="nav-link"><i class="fas fa-boxes"></i>優惠券</router-link>
                     </li>
                     </ul>
                     <!-- 側邊欄位 -->
@@ -41,6 +35,8 @@
                     </ul>
                 </div>
                 </nav>
+                <!-- 切換的router在這設定 -->
+                <!-- css設定col-md-9 -->
                 <main role="main" class="col-md-9 ml-sm-auto col-lg-10 px-4">
                     <router-view></router-view>
                 </main>
