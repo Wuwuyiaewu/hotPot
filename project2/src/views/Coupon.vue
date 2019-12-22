@@ -1,22 +1,29 @@
 <template>
     <div>
         <div class="row justify-content-end mr-2">
-            <button class="btn btn-primary" @click="getCoupon">新增物件</button>
+        <!-- 打開 modal -->
+            <button class="btn btn-primary" @click="openModal(true)">新增物件</button>
             <table class="table mt-3 text-left">
                 <tr>
                     <th width=200>名稱</th>
+                    <th width=200>折扣碼</th>
                     <th>折扣百分比</th>
                     <th width=200>到期日</th>
                     <th>是否啟用</th>
                     <th>編輯</th>
+                    <th>刪除</th>
                 </tr>
                 <tr v-for="item in Data" :key="item.due_data">
                     <td>{{item.title}}</td>
+                    <td>{{item.code}}</td>
                     <td>{{item.percent}}</td>
                     <td>{{item.due_data}}</td>
-                    <td>{{item.is_enable}}</td>
                     <td>
-                        <button class="btn">編輯</button>
+                        <span v-if="item.is_enabled === 1">啟用</span>
+                        <span v-else>未啟用</span>
+                    </td>
+                    <td>
+                        <button class="btn btn-danger" @click="openModal(false,item)">編輯</button>
                     </td>
                 </tr>
             </table>
@@ -30,8 +37,14 @@
                     <div class="row">
                         <div class="col-sm-6">
                             <div class="form-group">
+                                <label for="title">名稱</label>
                                 <input type="text" class="form-control" id="title"
                                     placeholder="請輸入名稱" v-model="tempData.title">
+                            </div>
+                            <div class="form-group">
+                                <label for="coupon_code">優惠碼</label>
+                                <input type="text" class="form-control" id="coupon_code" v-model="tempData.code"
+                                    placeholder="請輸入優惠碼">
                             </div>
                             <div class="form-group">
                                 <input type="text" class="form-control" id="percent"
@@ -43,8 +56,8 @@
                             </div>
                             <div class="form-group">
                                 <input type="checkbox" class="form-control" id="able"
-                                     v-model="tempData.is_enabled">
-                                <label for="able" :true-value="1" :false-value="0">是否啟用</label>
+                                     v-model="tempData.is_enabled" :true-value="1" :false-value="0">
+                                <label for="able">是否啟用</label>
                             </div>
                         </div>
                     </div>
@@ -66,32 +79,57 @@ export default {
         return{
             Data:[],
             isNew:true,
-            tempData:{},
+            tempData:{
+                title:'',
+                code:'',
+                percent:'',
+                due_date:0,
+                is_enabled:true
+            },
+            due_data: new Date()
         }
     },
     methods:{
-        openModal(isNewornot){
+        openModal(isNewornot,item){
             const vm = this
+            $('#newModal').modal('show')
             if(isNewornot){
                 vm.isNew = true
                 vm.tempData = {}
             }else{
                 vm.isNew = false
+                vm.tempData = item
             }
-            $('#newModal').modal('show')
         },
         getCoupon(){
             const vm = this
-            const url = `${process.env.VUE_APP_APIPATH}/api/${process.env.VUE_APP_USERPATH}/admin/coupon`
+            const url = `${process.env.VUE_APP_APIPATH}/api/${process.env.VUE_APP_USERPATH}/admin/coupons`
+            vm.axios.get(url).then(res=>{
+                vm.Data = res.data.coupons
+            })
         },
         updataCoupon(){
             const vm = this
-            const url = `${process.env.VUE_APP_APIPATH}/api/${process.env.VUE_APP_USERPATH}/admin/coupon`
-            console.log(vm.tempData)
-            vm.axios.post(url,{data:vm.tempData}).then((res)=>{
-                console.log(res.data)
-            })
+            let url = `${process.env.VUE_APP_APIPATH}/api/${process.env.VUE_APP_USERPATH}/admin/coupon`
+            if(vm.isNew){
+                vm.axios.post(url,{data:vm.tempData}).then((res)=>{
+                    console.log(res.data)
+                    vm.getCoupon()
+                    $('#newModal').modal('hide')
+                })
+            }else{
+                // 設定id 若非新的 
+                url = `${process.env.VUE_APP_APIPATH}/api/${process.env.VUE_APP_USERPATH}/admin/coupon/${vm.tempData.id}`
+                vm.axios.put(url,{data:vm.tempData}).then((res)=>{
+                    console.log(res.data)
+                    vm.getCoupon()
+                    $('#newModal').modal('hide')
+                })
+            }
         }
+    },
+    created(){
+        this.getCoupon()
     }
 }
 </script>
