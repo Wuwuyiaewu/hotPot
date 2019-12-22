@@ -10,7 +10,7 @@
                     <th>是否啟用</th>
                     <th>編輯</th>
                 </tr>
-                <tr v-for="item in tempData" :key="item.due_data">
+                <tr v-for="item in Data" :key="item.due_data">
                     <td>{{item.title}}</td>
                     <td>{{item.percent}}</td>
                     <td>{{item.due_data}}</td>
@@ -42,9 +42,9 @@
                                     placeholder="請輸入日期" v-model="tempData.due_date">
                             </div>
                             <div class="form-group">
-                                <label for="able"></label>
                                 <input type="checkbox" class="form-control" id="able"
-                                    placeholder="是否啟用" v-model="tempData.is_enabled">
+                                     v-model="tempData.is_enabled">
+                                <label for="able" :true-value="1" :false-value="0">是否啟用</label>
                             </div>
                         </div>
                     </div>
@@ -65,19 +65,24 @@ export default {
     data(){
         return{
             Data:[],
-            tempData:
-                {
-                    title:'',
-                    percent:'',
-                    due_date:'',
-                    is_enabled:true
-                }
-            
+            isNew:true,
+            tempData:{},
         }
     },
     methods:{
-        getCoupon(){
+        openModal(isNewornot){
+            const vm = this
+            if(isNewornot){
+                vm.isNew = true
+                vm.tempData = {}
+            }else{
+                vm.isNew = false
+            }
             $('#newModal').modal('show')
+        },
+        getCoupon(){
+            const vm = this
+            const url = `${process.env.VUE_APP_APIPATH}/api/${process.env.VUE_APP_USERPATH}/admin/coupon`
         },
         updataCoupon(){
             const vm = this
