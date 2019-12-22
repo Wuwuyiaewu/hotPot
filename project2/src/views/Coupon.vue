@@ -8,7 +8,7 @@
                     <th width=200>名稱</th>
                     <th width=200>折扣碼</th>
                     <th>折扣百分比</th>
-                    <th width=200>到期日</th>
+                    <th width=200>日期</th>
                     <th>是否啟用</th>
                     <th>編輯</th>
                     <th>刪除</th>
@@ -17,13 +17,16 @@
                     <td>{{item.title}}</td>
                     <td>{{item.code}}</td>
                     <td>{{item.percent}}</td>
-                    <td>{{item.due_data}}</td>
+                    <td>{{item.due_data | data}}</td>
                     <td>
                         <span v-if="item.is_enabled === 1">啟用</span>
                         <span v-else>未啟用</span>
                     </td>
                     <td>
                         <button class="btn btn-danger" @click="openModal(false,item)">編輯</button>
+                    </td>
+                    <td>
+                        <button class="btn btn-danger" @click="delModal(item.id)">刪除</button>
                     </td>
                 </tr>
             </table>
@@ -89,6 +92,12 @@ export default {
             due_data: new Date()
         }
     },
+    filters:{
+        data(time){
+            const date = new Date(time * 1000);
+            return date.toLocaleDateString();
+        }
+    },
     methods:{
         openModal(isNewornot,item){
             const vm = this
@@ -100,6 +109,14 @@ export default {
                 vm.isNew = false
                 vm.tempData = item
             }
+        },
+        delModal(id){
+            const vm = this
+            const url = `${process.env.VUE_APP_APIPATH}/api/${process.env.VUE_APP_USERPATH}/admin/coupon/${id}`
+            vm.axios.delete(url).then(res=>{
+                console.log(res.data)
+                vm.getCoupon()
+            })
         },
         getCoupon(){
             const vm = this
