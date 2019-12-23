@@ -86,21 +86,38 @@
           </div>
         </div>
         <!-- 購物車欄位 -->
-        <table>
-          <tr>
-            <th>id</th>
-            <th>1</th>
-            <th>2</th>
-            <th>3</th>
-            <th>4</th>
-          </tr>
-          <tr v-for="item in cartProduct" :key="item.id">
-            <td>{{item.id}}</td>
-            <td>{{item.product.price}}</td>
-            <td></td>
-            <td></td>
-            <td></td>
-          </tr>
+        <table class="table">
+          <thead>
+            <tr>
+              <th w=50>刪除</th>
+              <th w=200>id</th>
+              <th w=50>數量</th>
+              <th w=100>價格</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr v-for="item in cartProduct" :key="item.id">
+              <td>
+                <button class="btn btn-danger" @click="removeCart(item.id)">
+                  <i class="far fa-trash-alt"></i>
+                </button>
+              </td>
+              <td>{{item.id}}</td>
+              <td>{{item.product.num}} / 個</td>
+              <td>{{item.product.price}} 元</td>
+            </tr>
+          </tbody>
+          <tfoot>
+            <tr>
+              <!-- colspan 可以使表格佔據td幾個 -->
+              <td colspan="3" class="text-right text-success">折扣價</td>
+              <td></td>
+            </tr>
+            <tr>
+              <td></td>
+              <td></td>
+            </tr>
+          </tfoot>
         </table>
     </div>
 </template>
@@ -190,9 +207,20 @@ export default {
       // 購物車資料數值不得有NaN
       const url = `${process.env.VUE_APP_APIPATH}/api/${process.env.VUE_APP_USERPATH}/cart`;
       vm.$http.get(url).then((res)=>{
-        console.log(res.data.data.carts)
         // 找到數值並且推入
         vm.cartProduct = res.data.data.carts
+      })
+    },
+    removeCart(id){
+      const vm = this;
+      // 取得訂單列表 api
+      // 購物車資料數值不得有NaN
+      const url = `${process.env.VUE_APP_APIPATH}/api/${process.env.VUE_APP_USERPATH}/cart/${id}`;
+      vm.isLoading = true
+      vm.$http.delete(url).then(()=>{
+        // 找到數值並且推入
+        vm.isLoading = false
+        vm.getCart()
       })
     }
   },
