@@ -167,8 +167,6 @@ export default {
       const vm = this;
       // 取得訂單列表 api
       const url = `${process.env.VUE_APP_APIPATH}/api/${process.env.VUE_APP_USERPATH}/product/${id}`;
-      // 觸發 loading 效果 :active.sync="isLoading"
-      vm.isLoading = true;
       // 查看購物車的 icon spin 是否顯示倚靠 id 是否等於該查看 id
       vm.status.loadingItem = id
       this.$http.get(url).then((response) => {
@@ -178,7 +176,6 @@ export default {
         // 打開 modal
         console.log(response);
         // 設定假值 isLoading (因為比對是依據 v-if 真假數值)
-        vm.isLoading = false;
         // 設定空數 icon (因為比對是依據 v-if ===)
         vm.status.loadingItem = ''
       });
@@ -192,13 +189,11 @@ export default {
         product_id:id,
         qty
       }
-      vm.isLoading = true
       vm.status.loadingItem = id
       this.$http.post(url,{data:cartData}).then((res)=>{
         console.log(res)
         vm.getCart()
         vm.status.loadingItem = ''
-        vm.isLoading = false
       })
     },
     getCart(){
@@ -207,6 +202,7 @@ export default {
       // 購物車資料數值不得有NaN
       const url = `${process.env.VUE_APP_APIPATH}/api/${process.env.VUE_APP_USERPATH}/cart`;
       vm.$http.get(url).then((res)=>{
+        console.log(res)
         // 找到數值並且推入
         vm.cartProduct = res.data.data.carts
       })

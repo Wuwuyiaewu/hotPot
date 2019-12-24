@@ -54,7 +54,7 @@
                                     placeholder="請輸入折扣" v-model="tempData.percent">
                             </div>
                             <div class="form-group">
-                                <input type="data" class="form-control" id="data"
+                                <input type="date" class="form-control" id="data"
                                     placeholder="請輸入日期" v-model="tempData.due_date">
                             </div>
                             <div class="form-group">
