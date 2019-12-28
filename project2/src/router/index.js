@@ -17,6 +17,7 @@ const routes = [
     name: "login",
     component: Login
   },
+  // Dashboard 有兩個進入點 需驗證的admin 與 不用驗證的
   {
     path: "/admin",
     name: "Dashboard",
