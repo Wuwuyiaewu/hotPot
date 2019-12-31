@@ -63,7 +63,9 @@
           </div>
           <div class="modal-footer">
             <div class="text-muted text-nowrap mr-3">
-              小計 <strong>{{ product.num * product.price }}</strong> 元
+              小計 
+              <strong v-if="product.price">{{ product.num * product.price }}</strong>
+              <strong v-if="!product.price">{{ product.num * product.origin_price }}</strong> 元
             </div>
             <button type="button" class="btn btn-primary"
               @click="addtoCart(product.id, product.num)">
@@ -108,7 +110,6 @@ export default {
         vm.product.num = 1
         console.log(res.data)
       })
-
     },
     addtoCart(id,qty=1){
       const vm = this
@@ -120,10 +121,18 @@ export default {
       vm.axios.post(url,{data:cart}).then(res=>{
         console.log(res)
       })
-    }
+    },
+    getcart(){
+      const vm = this
+      let url = `${process.env.VUE_APP_APIPATH}/api/${process.env.VUE_APP_USERPATH}/cart`
+      vm.axios.get(url).then(res=>{
+        console.log(res)
+      })
+    },
   },
   created(){
     this.getProducts()
+    this.getcart()
   }
 }
 </script>
