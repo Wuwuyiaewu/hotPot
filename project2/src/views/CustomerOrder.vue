@@ -22,17 +22,63 @@
           </div>
           <div class="card-footer d-flex">
             <button type="button" class="btn btn-outline-secondary btn-sm" @click="getProduct(item.id)">
-              <i class="fas fa-spinner fa-spin"></i>
+              <i class="fas fa-spinner fa-spin" v-if="item.id === status"></i>
               查看更多
             </button>
             <button type="button" class="btn btn-outline-danger btn-sm ml-auto" @click="addtoCart(item.id)">
-              <i class="fas fa-spinner fa-spin"></i>
+              <i class="fas fa-spinner fa-spin" v-if="item.id === status"></i>
               加到購物車
             </button>
           </div>
         </div>
       </div>
     </div>
+    <!-- 購物車資訊開始 -->
+    <table class="table">
+      <thead>
+        <tr>
+          <th>刪除</th>
+          <th>品項</th>
+          <th>數量</th>
+          <th>價格</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr v-for="item in cart.carts" :key="item.id">
+          <td>
+            <button class="btn btn-danger" @click="delcart(item.id)">
+              刪除
+            </button>
+          </td>
+          <td>{{item.product.title}}</td>
+          <td>{{item.qty}}</td>
+          <td>{{item.product.price}}
+              <p v-if="item.coupon" class="text-success">已套用優惠碼</p>
+          </td>
+        </tr>
+      </tbody>
+      <tfoot v-if="cart.total">
+        <tr >
+          <td colspan="3" class="text-right" v-if="cart.total === cart.final_total">總計</td>
+          <td v-if="cart.total === cart.final_total">{{cart.total}} $</td>
+          <td class="text-right" v-if="cart.total !== cart.final_total">總計</td>
+          <td v-if="cart.total !== cart.final_total"><del>{{cart.total}} $</del></td>
+          <td class="text-right" v-if="cart.total !== cart.final_total">總計</td>
+          <td v-if="cart.total !== cart.final_total">{{cart.final_total}} $</td>
+        </tr>
+      </tfoot>
+    </table>
+    <!-- 購物車資訊結束 -->
+    <!-- 套用優惠券開始 -->
+    <div class="input-group mb-3 input-group-sm">
+      <input type="text" class="form-control" v-model="coupon_code" placeholder="請輸入優惠碼">
+      <div class="input-group-append">
+        <button class="btn btn-outline-secondary" type="button" @click="addcoupon">
+          套用優惠碼
+        </button>
+      </div>
+    </div>
+    <!-- 套用優惠券結束 -->
     <!-- 查看購物車之modal 開始 -->
     <div class="modal fade" id="productModal" tabindex="-1" role="dialog"
       aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -88,7 +134,10 @@ export default {
       alldataHold:[],
       product:{},
       isLoading: false,
-      spin_id:''
+      spin_id:'',
+      cart:{},
+      coupon_code:'',
+      status:''
     }
   },
   methods:{
@@ -104,31 +153,63 @@ export default {
     getProduct(id){
       const vm = this
       let url = `${process.env.VUE_APP_APIPATH}/api/${process.env.VUE_APP_USERPATH}/product/${id}`
+      vm.status = id
       vm.axios.get(url).then(res=>{
         $('#productModal').modal('show')
         vm.product = res.data.product
+        vm.status = ''
         vm.product.num = 1
         console.log(res.data)
       })
     },
     addtoCart(id,qty=1){
       const vm = this
+      vm.status = id
       let url = `${process.env.VUE_APP_APIPATH}/api/${process.env.VUE_APP_USERPATH}/cart`
+      vm.isLoading = true
       const cart = {
           product_id: id,
           qty
         }
       vm.axios.post(url,{data:cart}).then(res=>{
+        vm.isLoading = false
+        $('#productModal').modal('hide')
+        vm.getcart()
+        vm.status = ''
         console.log(res)
       })
     },
     getcart(){
       const vm = this
       let url = `${process.env.VUE_APP_APIPATH}/api/${process.env.VUE_APP_USERPATH}/cart`
+      vm.isLoading = true
       vm.axios.get(url).then(res=>{
-        console.log(res)
+        console.log(res.data.data)
+        vm.isLoading = false
+        vm.cart = res.data.data
       })
     },
+    delcart(id){
+      const vm = this
+      let url = `${process.env.VUE_APP_APIPATH}/api/${process.env.VUE_APP_USERPATH}/cart/${id}`
+      vm.isLoading = true
+      vm.axios.delete(url).then((res)=>{
+        console.log(res)
+        vm.getcart()
+      })
+    },
+    addcoupon(){
+      const vm = this
+      let url = `${process.env.VUE_APP_APIPATH}/api/${process.env.VUE_APP_USERPATH}/coupon`
+      const coupon = {
+        "code": vm.coupon_code
+      }
+      vm.isLoading = true
+      vm.axios.post(url,{data:coupon}).then((res)=>{
+        console.log(res)
+        vm.getcart()
+      })
+    }
   },
   created(){
     this.getProducts()
