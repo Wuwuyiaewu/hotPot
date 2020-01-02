@@ -79,6 +79,9 @@
       </div>
     </div>
     <!-- 套用優惠券結束 -->
+    <!-- 驗證表開始 -->
+    
+    <!-- 驗證表結束 -->
     <!-- 查看購物車之modal 開始 -->
     <div class="modal fade" id="productModal" tabindex="-1" role="dialog"
       aria-labelledby="exampleModalLabel" aria-hidden="true">

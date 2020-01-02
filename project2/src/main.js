@@ -17,6 +17,9 @@ import './bus'
 // 註冊全域 Filter currency
 import currencyFilter from './filters/currency'
 Vue.use(VueAxios, axios)
+// veevalidate
+
+Vue.component("ValidationProvider", ValidationProvider);
 // 開啟全域變數
 // 在任何頁面都可以使用 Loading 標籤
 Vue.component('Loading', Loading)
