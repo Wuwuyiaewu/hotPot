@@ -80,7 +80,39 @@
     </div>
     <!-- 套用優惠券結束 -->
     <!-- 驗證表開始 -->
-    
+    <ValidationObserver ref="observer" v-slot="{ invalid }" tag="form">
+    <form class="col-md-6" @submit.prevent="createOrder">
+      <div class="form-group">
+        <label for="useremail">Email</label>
+        <ValidationProvider rules="email" v-slot="{ errors }">
+          <input type="text" class="form-control"  v-model="form.user.email" id="useremail" placeholder="請輸入email">
+          <span class="text-danger">{{ errors[0] }}</span>
+        </ValidationProvider>
+      </div>
+      <div class="form-group">
+        <label for="username">收件人姓名</label>
+        <ValidationProvider v-slot="{ errors }" rules="required" name="姓名">
+          <input type="text" class="form-control" name="name" id="username" v-model="form.user.name"
+            placeholder="輸入姓名">
+          <span class="text-danger">{{ errors[0] }}</span>
+        </ValidationProvider>
+      </div>
+      <div class="form-group">
+        <label for="usertel">收件人電話</label>
+        <ValidationProvider v-slot="{ errors }" rules="required" name="電話">
+          <input type="tel" class="form-control" id="usertel" v-model="form.user.tel" placeholder="請輸入電話">
+          <span class="text-danger"> {{ errors[0] }}</span>
+        </ValidationProvider>
+      </div>
+      <div class="form-group">
+        <label for="comment">留言</label>
+        <textarea name="" id="comment" class="form-control" cols="30" rows="10" v-model="form.message"></textarea>
+      </div>
+      <div class="text-right">
+        <button class="btn btn-danger" :disabled="invalid">送出訂單</button>
+      </div>
+    </form>
+    </ValidationObserver>
     <!-- 驗證表結束 -->
     <!-- 查看購物車之modal 開始 -->
     <div class="modal fade" id="productModal" tabindex="-1" role="dialog"
@@ -140,7 +172,15 @@ export default {
       spin_id:'',
       cart:{},
       coupon_code:'',
-      status:''
+      status:'',
+      form:{
+        user:{
+          email:'',
+          name:'',
+          tel:'',
+        }
+      }
+
     }
   },
   methods:{
@@ -212,6 +252,15 @@ export default {
         console.log(res)
         vm.getcart()
       })
+    },
+    createOrder() {
+      const vm = this;
+      const api = `${process.env.VUE_APP_APIPATH}/api/${process.env.VUE_APP_USERPATH}/order`;
+      const user = vm.form;
+      this.$http.post(api, { data: user }).then(response => {
+        console.log(response)
+        vm.isLoading = false;
+      });
     }
   },
   created(){

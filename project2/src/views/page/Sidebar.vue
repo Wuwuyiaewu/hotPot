@@ -15,7 +15,7 @@
                         <router-link to="/admin/product" class="nav-link"><i class="fas fa-boxes"></i>產品列表</router-link>
                     </li>
                     <li class="nav-item">
-                        <router-link to="/admin/coupon" class="nav-link"><i class="fas fa-boxes"></i>訂單列表</router-link>
+                        <router-link to="/admin/orderList" class="nav-link"><i class="fas fa-boxes"></i>訂單列表</router-link>
                     </li>
                     <li class="nav-item">
                         <router-link to="/admin/coupon" class="nav-link"><i class="fas fa-boxes"></i>優惠券</router-link>

@@ -18,8 +18,14 @@ import './bus'
 import currencyFilter from './filters/currency'
 Vue.use(VueAxios, axios)
 // veevalidate
+import {ValidationProvider ,ValidationObserver, extend } from "vee-validate";
+import * as rules from "vee-validate/dist/rules";
 
+Object.keys(rules).forEach(rule => {
+  extend(rule, rules[rule]);
+});
 Vue.component("ValidationProvider", ValidationProvider);
+Vue.component("ValidationObserver", ValidationObserver);
 // 開啟全域變數
 // 在任何頁面都可以使用 Loading 標籤
 Vue.component('Loading', Loading)

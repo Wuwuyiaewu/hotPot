@@ -9,6 +9,8 @@ import Product from '../views/Product.vue'
 import Coupon from '../views/Coupon.vue'
 // 購物頁面
 import CustomerOrder from '../views/CustomerOrder'
+// 訂單列表
+import OrderList from "../views/OrderList";
 Vue.use(VueRouter)
 
 const routes = [
@@ -22,30 +24,36 @@ const routes = [
     path: "/admin",
     name: "Dashboard",
     component: Dashboard,
-    children:[
+    children: [
       {
         path: "product",
         name: "product",
         component: Product,
-        meta: { requiredUser: true },
+        meta: { requiredUser: true }
+      },
+      {
+        path: "orderList",
+        name: "orderList",
+        component: OrderList,
+        meta: { requiredUser: true }
       },
       {
         path: "coupon",
         name: "coupon",
         component: Coupon,
-        meta: { requiredUser: true },
-      },
+        meta: { requiredUser: true }
+      }
     ]
   },
   {
     path: "/",
     name: "Dashboard",
     component: Dashboard,
-    children:[
+    children: [
       {
         path: "customer_order",
         name: "CustomerOrder",
-        component: CustomerOrder,
+        component: CustomerOrder
       }
     ]
   },
@@ -53,7 +61,7 @@ const routes = [
     path: "/signin",
     name: "login",
     component: Login
-  },
+  }
 ];
 
 const router = new VueRouter({
