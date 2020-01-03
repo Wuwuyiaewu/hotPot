@@ -258,7 +258,11 @@ export default {
       const api = `${process.env.VUE_APP_APIPATH}/api/${process.env.VUE_APP_USERPATH}/order`;
       const user = vm.form;
       this.$http.post(api, { data: user }).then(response => {
-        console.log(response)
+        if(response.data.success){
+          console.log(response.data)
+          // 透過前往參數，在結帳頁面得到orderId
+          vm.$router.push(`customer_checkout/${response.data.orderId}`)
+        }
         vm.isLoading = false;
       });
     }

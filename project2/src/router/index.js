@@ -9,6 +9,8 @@ import Product from '../views/Product.vue'
 import Coupon from '../views/Coupon.vue'
 // 購物頁面
 import CustomerOrder from '../views/CustomerOrder'
+// 結帳頁面
+import CustomerCheckout from '../views/CustomerCheckout'
 // 訂單列表
 import OrderList from "../views/OrderList";
 Vue.use(VueRouter)
@@ -52,8 +54,13 @@ const routes = [
     children: [
       {
         path: "customer_order",
-        name: "CustomerOrder",
+        name: "customerOrder",
         component: CustomerOrder
+      },
+      {
+        path: "customer_checkout/:orderId",
+        name: "customer_checkout",
+        component: CustomerCheckout
       }
     ]
   },
